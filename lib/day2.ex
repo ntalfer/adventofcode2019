@@ -28,10 +28,33 @@ defmodule Day2 do
     end
   end
 
+  def compute(program, noun, verb) do
+  [n0, _n1, _n2 | rest] = program
+  new_program = [n0, noun, verb | rest]
+  [new_n0 | _] = part1_final_state(new_program)
+  new_n0
+  end
+
   def part1(program) do
-    [n0, _n1, _n2 | rest] = program
-    new_program = [n0, 12, 2 | rest]
-    [new_n0 | _] = part1_final_state(new_program)
-    new_n0
+    compute(program, 12, 2)
+  end
+
+  def part2(program, output) do
+    part2(program, output, 0, 0)
+  end
+
+  def part2(program, output, noun, verb) do
+    case compute(program, noun, verb) do
+        ^output ->
+            100 * noun + verb
+        _ when verb < 99 ->
+            part2(program, output, noun, verb+1)
+        _ when noun < 99 and verb == 99 ->
+            part2(program, output, noun+1, 0)
+        _ when noun < 99 ->
+            part2(program, output, noun+1, 0)
+        _ ->
+            :not_found
+    end
   end
 end
