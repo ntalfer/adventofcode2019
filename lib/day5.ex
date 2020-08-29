@@ -43,9 +43,23 @@ defmodule Day5 do
 
       3 ->
         # input
-        pos = Enum.at(program, index + 1)
-        new_program = store(program, pos, input)
-        run(new_program, index + 2, input, output)
+        case input do
+            [input_a, input_b] ->
+                #IO.puts "giving 1st input #{input_a}"
+                pos = Enum.at(program, index + 1)
+                new_program = store(program, pos, input_a)
+                run(new_program, index + 2, [input_b], output)
+            [input_b] ->
+                #IO.puts "giving 2nd input #{input_b}"
+                pos = Enum.at(program, index + 1)
+                new_program = store(program, pos, input_b)
+                run(new_program, index + 2, input_b, output)
+            _ when is_integer(input) ->
+                #IO.puts "giving another input #{input}"
+                pos = Enum.at(program, index + 1)
+                new_program = store(program, pos, input)
+                run(new_program, index + 2, input, output)
+            end
 
       4 ->
         # output
@@ -141,6 +155,8 @@ defmodule Day5 do
           new_program = store(program, param3, 0)
           run(new_program, index + 4, input, output)
         end
+        _->
+            IO.inspect "INVALID CODE"
     end
   end
 
